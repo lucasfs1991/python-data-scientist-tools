@@ -1,0 +1,45 @@
+import plotly as py
+import sklearn as skl
+import sklearn.model_selection
+import sklearn.tree
+import sklearn.ensemble
+import sklearn.discriminant_analysis
+
+py.offline.init_notebook_mode(connected=True)
+
+kf = skl.model_selection.KFold(n_splits=10)
+
+response = data.Survived.values
+features = data.loc[:, 'Pclass':'Fare'].values.tolist()
+
+results = []
+models = [
+    ['Logistic Regression', skl.linear_model.LogisticRegression(solver='liblinear')],
+    ['Decision Tree', skl.tree.DecisionTreeClassifier()],
+    ['KNN', skl.neighbors.KNeighborsClassifier()],
+    ['SVM', skl.svm.SVC(gamma='scale')],
+    ['Random Forest', skl.ensemble.RandomForestClassifier(n_estimators=100)],
+    ['ADABoost', skl.ensemble.AdaBoostClassifier()],
+    ['LDA', skl.discriminant_analysis.LinearDiscriminantAnalysis()]
+]
+                         
+for method, model in models:
+    cv_model = skl.model_selection.cross_val_score(model, features, response, cv=kf)
+    results.append((method,
+                    np.around(cv_model, decimals=4),
+                    np.around(cv_model.mean(), decimals=4),
+                    np.around(cv_model.var(), decimals=4)
+    ))
+
+boxplot= []
+
+for result in results:
+    boxplot.append(
+        py.graph_objs.Box(
+            y=result[1],
+            name=result[0]
+        )
+    )
+    
+py.offline.iplot(boxplot)
+pd.DataFrame(np.array(results).reshape(len(models), 4), columns=list(['Method', 'Scores', 'Mean', 'Variance'])).style.set_properties(**{'word-wrap': 'break-word'})
