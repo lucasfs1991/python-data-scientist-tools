@@ -1,0 +1,13 @@
+import pandas as pd
+import plotly as py
+import plotly.graph_objs as go
+
+py.offline.init_notebook_mode(connected=True)
+
+plot_correlation_matrix = [
+    go.Heatmap(
+        z=df.corr().values.tolist()
+    )
+]
+
+py.offline.iplot(plot_correlation_matrix)
