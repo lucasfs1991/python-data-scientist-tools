@@ -9,8 +9,9 @@ py.offline.init_notebook_mode(connected=True)
 
 kf = skl.model_selection.KFold(n_splits=10)
 
-response = data.Survived.values
-features = data.loc[:, 'Pclass':'Fare'].values.tolist()
+# Split dataframe in response and features subsets
+response = df['response'].values
+features = df.loc[:, 'Col1':'Col10'].values.tolist()
 
 results = []
 models = [
