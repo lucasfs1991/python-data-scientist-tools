@@ -1,0 +1,17 @@
+py_data = []
+
+for category in df['ColX'].unique():
+    count = df.query('ColX == @category')['ColY'].value_counts()
+    py_data.append(
+        go.Bar(
+            x=count.index,
+            y=count.values,
+            name=category
+        )
+    )
+
+py_layout = go.Layout(
+    title='Barplot of ColY by ColX',
+)
+
+py.offline.iplot(go.Figure(data=py_data, layout=py_layout))
