@@ -6,7 +6,7 @@ for category in df['ColX'].unique():
         go.Bar(
             x=count.index,
             y=count.values,
-            name=category
+            name=str(category),
         )
     )
 
