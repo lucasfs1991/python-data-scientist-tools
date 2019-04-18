@@ -1,0 +1,14 @@
+# This is only the part of code with annotations definitions
+
+annotations = []
+
+for index, value in enumerate(count.items()):
+    annotations.append(
+        dict(
+            x=value[0],
+            y=value[1],
+            text=np.vectorize(f)(count.values/total.values)[index],
+            textangle=315,
+            showarrow=False,
+        ),
+    )
